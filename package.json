@@ -1,0 +1,25 @@
+{
+  "name": "electron-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jocelyn127/electron-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jocelyn127/electron-demo/issues"
+  },
+  "homepage": "https://github.com/Jocelyn127/electron-demo#readme",
+  "devDependencies": {
+    "electron": "^8.2.1",
+    "electron-packager": "^14.2.1"
+  }
+}

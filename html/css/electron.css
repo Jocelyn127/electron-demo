@@ -1,0 +1,27 @@
+.space-section{ 
+    text-align: center;
+    color:#666;
+    font-size:18px;
+    height:100px;
+    line-height: 100px; 
+}
+
+ul li {
+    position: relative;
+}
+
+.close-btn{
+    position: absolute;
+    width:30px;
+    height:30px;
+    text-align: center;
+    cursor: pointer;
+    font-size:25px;
+    right: 10px;
+    top: 7px;
+    color:#ccc;
+}
+
+.close-btn:hover{
+    color:#333;
+}
