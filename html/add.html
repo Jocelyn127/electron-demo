@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <title>Insert INFO</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./css/basic.css">
+    <link rel="stylesheet" type="text/css" href="./css/electron.css">
+</head>
+
+<body>
+    <section class="form-box">
+        <form>
+            <label for="info">Please Enter Info Name</label>
+            <input type="text" name="info" id="info" autofocus placeholder="please enter info name">
+            <button type="submit" class="btn btn-add">ADD</button>
+        </form>
+    </section>
+
+    <script>
+        const electron = require('electron');
+        const { ipcRenderer } = electron;
+        const form = document.querySelector('form');
+
+        //listen submit event
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            let val = document.querySelector('#info').value;
+            console.log(val);
+            // send value
+            ipcRenderer.send('info:add', val);
+        })
+    </script>
+</body>
+
+</html>

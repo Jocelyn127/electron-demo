@@ -14,13 +14,45 @@
         </div>>
     </nav>
 
-    <ul class="collection">
-        <li class="collection-item">Info List001 <i class="close-btn">x</i></li>
+    <ul id="wrap">
+        <!-- <li class="collection-item">Info List001 <i class="close-btn">x</i></li>
         <li class="collection-item">Info List002 <i class="close-btn">x</i></li>
-        <li class="collection-item">Info List003 <i class="close-btn">x</i></li>
+        <li class="collection-item">Info List003 <i class="close-btn">x</i></li> -->
     </ul>
-    
-    <h3 class="space-section">No info, pls add.</h3>
-</body>
 
+    <h3 class="space-section">No info, pls add.</h3>
+
+    <script>
+        const electron = require('electron');
+        const { ipcRenderer } = electron;
+        const ul = document.querySelector('#wrap');
+        const spaceSection = document.querySelector('.space-section');
+
+        // receive sub-win send info
+        ipcRenderer.on('info:add', (event, val) => {
+            const li = document.createElement('li');
+            ul.className = 'collection';
+            li.className = 'collection-item';
+            li.innerHTML = val + '<i class="close-btn">x</i>';
+            ul.append(li);
+            spaceSection.style.display = 'none';
+            domListener();
+        })
+
+        // dom listen
+        function domListener() {
+            document.querySelectorAll('.close-btn').forEach(el => {
+                el.addEventListener('click', function (ev) {
+                    this.parentNode.remove();
+                    // check list if null
+                    if (ul.children.length === 0) {
+                        ul.className = '';
+                        // ul.className.remove('collection');
+                        spaceSection.style.display = 'block';
+                    }
+                });
+            })
+        }
+    </script>
+</body>
 </html>

@@ -1,6 +1,6 @@
 // import electron instance
 const electron = require('electron');
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu, ipcMain } = electron;
 const path = require('path');
 const url = require('url');
 
@@ -8,12 +8,14 @@ console.log('global env:');
 console.log(process.env.NODE_ENV);
 
 let win = null;
+let addWin = null;
 // listen
 app.on('ready', () => {
     //create window
     win = new BrowserWindow({
         height: 600,
-        width: 600
+        width: 600,
+        webPreferences: { nodeIntegration: true }
     });
 
     // win.loadURL('https://www.baidu.com');
@@ -27,6 +29,11 @@ app.on('ready', () => {
     checkEnv();
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
+
+    // click main win close button, sub-win should also be closed.
+    win.on('closed', () => {
+        app.quit();
+    });
 });
 
 // Top menu template
@@ -34,7 +41,12 @@ const menuTemplate = [{
     // File menu items
     label: 'File',
     submenu: [
-        { label: 'Insert Info' },
+        {
+            label: 'Insert Info',
+            click: () => {
+                createAddWindow();
+            }
+        },
         { label: 'Delete Info' },
         {
             label: 'Quit',
@@ -46,15 +58,33 @@ const menuTemplate = [{
         }
     ]
 }];
+//create a new window
+const createAddWindow = () => {
+    addWin = new BrowserWindow({
+        height: 300,
+        width: 600,
+        webPreferences: { nodeIntegration: true }
+    });
 
-const checkEnv=()=>{
-    let env= process.env.NODE_ENV;
-    let devConfig={
+    // win.loadURL('https://www.baidu.com');
+    addWin.loadURL(url.format({
+        pathname: path.resolve(__dirname, './html/add.html'),
+        proctocal: 'file',
+        slashes: true
+    }));
+}
+
+
+
+// check current env
+const checkEnv = () => {
+    let env = process.env.NODE_ENV;
+    let devConfig = {
         label: 'Dev Tools',
         submenu: [
             {
                 label: 'Open/Close',
-                accelerator: process.platform==='darwin'?'':'F12',
+                accelerator: process.platform === 'darwin' ? '' : 'F12',
                 click: (item, focusedWindow) => {
                     // current focused window, toggle devtools
                     focusedWindow.toggleDevTools();
@@ -68,7 +98,18 @@ const checkEnv=()=>{
         ]
 
     };
-    if(env!=='production'){
+    if (env !== 'production') {
         menuTemplate.push(devConfig);
     }
 }
+
+// event lsiten
+const eventListen = ()=>{
+    // listen new insert window send info 
+    ipcMain.on('info:add',(event, val)=>{
+        win.webContents.send('info:add', val);
+        console.log(val);
+    })
+}
+
+eventListen();

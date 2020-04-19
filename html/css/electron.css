@@ -25,3 +25,13 @@ ul li {
 .close-btn:hover{
     color:#333;
 }
+
+.form-box{
+    width:80%;
+    margin:auto;
+}
+
+.btn-add{
+    width:100%;
+    margin-top:2px;
+}
