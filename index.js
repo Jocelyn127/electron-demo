@@ -47,7 +47,10 @@ const menuTemplate = [{
                 createAddWindow();
             }
         },
-        { label: 'Delete Info' },
+        { label: 'Delete Info', 
+            click:()=>{
+                win.webContents.send('info:clear');
+        } },
         {
             label: 'Quit',
             accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q',
@@ -108,7 +111,7 @@ const eventListen = ()=>{
     // listen new insert window send info 
     ipcMain.on('info:add',(event, val)=>{
         win.webContents.send('info:add', val);
-        console.log(val);
+        addWin.close();
     })
 }
 

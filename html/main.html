@@ -39,6 +39,13 @@
             domListener();
         })
 
+        //receive clear info
+        ipcRenderer.on('info:clear', (event) => {
+            ul.className = '';
+            ul.innerHTML = '';
+            spaceSection.style.display = 'block';
+        });
+
         // dom listen
         function domListener() {
             document.querySelectorAll('.close-btn').forEach(el => {
@@ -55,4 +62,5 @@
         }
     </script>
 </body>
+
 </html>
