@@ -4,6 +4,9 @@ const { app, BrowserWindow, Menu } = electron;
 const path = require('path');
 const url = require('url');
 
+console.log('global env:');
+console.log(process.env.NODE_ENV);
+
 let win = null;
 // listen
 app.on('ready', () => {
@@ -21,6 +24,7 @@ app.on('ready', () => {
     }));
 
     //Define nav bar
+    checkEnv();
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
 });
@@ -41,21 +45,30 @@ const menuTemplate = [{
             }
         }
     ]
-}, {
-    label: 'Dev Tools',
-    submenu: [
-        {
-            label: 'Open/Close',
-            accelerator: process.platform==='darwin'?'':'F12',
-            click: (item, focusedWindow) => {
-                // current focused window, toggle devtools
-                focusedWindow.toggleDevTools();
-            }
-        },
-        {
-            label: 'Refresh',
-            role: 'reload',
-            accelerator: process.platform === 'darwin' ? 'Command+F5' : 'Ctrl+F5'
-        }
-    ]
 }];
+
+const checkEnv=()=>{
+    let env= process.env.NODE_ENV;
+    let devConfig={
+        label: 'Dev Tools',
+        submenu: [
+            {
+                label: 'Open/Close',
+                accelerator: process.platform==='darwin'?'':'F12',
+                click: (item, focusedWindow) => {
+                    // current focused window, toggle devtools
+                    focusedWindow.toggleDevTools();
+                }
+            },
+            {
+                label: 'Refresh',
+                role: 'reload',
+                accelerator: process.platform === 'darwin' ? 'Command+F5' : 'Ctrl+F5'
+            }
+        ]
+
+    };
+    if(env!=='production'){
+        menuTemplate.push(devConfig);
+    }
+}
